@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from models.schema import PosterRequest, PosterImageRequest, TextToImageRequest
+from backend.models.schema import PosterRequest, PosterImageRequest, TextToImageRequest
 from utils.llama_generate_fields import call_llama_generate_fields
 from utils.prompt_builder import build_image_generation_prompt
 from utils.prompt_refiner import refine_prompt_through_god_template
