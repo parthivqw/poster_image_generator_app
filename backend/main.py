@@ -1,15 +1,16 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from backend.models.schema import PosterRequest, PosterImageRequest, TextToImageRequest
-from utils.llama_generate_fields import call_llama_generate_fields
-from utils.prompt_builder import build_image_generation_prompt
-from utils.prompt_refiner import refine_prompt_through_god_template
-from utils.image_generator import generate_poster_image
-from utils.extended_image_generator import generate_image
-from utils.enhance_prompt import enhance_prompt
+from backend.utils.llama_generate_fields import call_llama_generate_fields
+from backend.utils.prompt_builder import build_image_generation_prompt
+from backend.utils.prompt_refiner import refine_prompt_through_god_template
+from backend.utils.image_generator import generate_poster_image
+from backend.utils.extended_image_generator import generate_image
+from backend.utils.enhance_prompt import enhance_prompt
 from dotenv import load_dotenv
 import json
 import os
+
 
 load_dotenv()
 
