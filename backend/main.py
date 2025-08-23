@@ -104,3 +104,12 @@ async def generate_images(data: TextToImageRequest):
     except Exception as e:
         print("❌ [generate-images] Error:", str(e))
         raise HTTPException(status_code=500, detail="Our models are busy right now, try again later.")
+
+
+@app.get("/")
+async def root():
+    return {"status": "ok", "message": "Backend is running!"}
+
+@app.get("/healthz")
+async def health():
+    return {"status": "healthy"}
