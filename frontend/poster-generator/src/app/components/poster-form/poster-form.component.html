@@ -1,0 +1,67 @@
+<div class="poster-generator">
+  <!-- Left: User Inputs -->
+  <div class="input-section">
+    <h2 class="section-title">Poster Architect</h2>
+
+    <!-- Main Prompt -->
+    <div class="form-group">
+      <label for="main-prompt">Prompt</label>
+      <textarea id="main-prompt" [(ngModel)]="form.main_prompt" rows="3"
+        placeholder="e.g., Generate a 1024x1024 poster for a Java bootcamp..."></textarea>
+    </div>
+
+    <!-- Field Selection -->
+    <div class="form-group">
+      <label>Select poster sections</label>
+      <div class="checkbox-grid">
+        <label><input type="checkbox" [(ngModel)]="form.include_hero_headline" /> Hero Headline</label>
+        <label><input type="checkbox" [(ngModel)]="form.include_hero_subline" /> Hero Subline</label>
+        <label><input type="checkbox" [(ngModel)]="form.include_description" /> Description</label>
+        <label><input type="checkbox" [(ngModel)]="form.include_cta" /> Call To Action</label>
+        <label><input type="checkbox" [(ngModel)]="form.include_testimonial" /> Testimonial</label>
+        <label><input type="checkbox" [(ngModel)]="form.include_success_metrics" /> Success Metrics</label>
+        <label><input type="checkbox" [(ngModel)]="form.include_target_audience" /> Target Audience</label>
+        <label><input type="checkbox" [(ngModel)]="form.include_cta_link" /> CTA Link</label>
+      </div>
+    </div>
+
+    <!-- Optional Theme -->
+    <div class="form-group">
+      <label for="theme">Optional: Theme / Background aesthetics</label>
+      <input id="theme" [(ngModel)]="form.theme" placeholder="e.g., Futuristic Tech Vibe" />
+    </div>
+
+    <!-- Generate Poster Fields -->
+    <button class="btn primary-btn" (click)="submitForm()">
+      <span class="icon">&#x21BB;</span> Generate Poster Fields
+    </button>
+
+    <!-- Editable Fields After LLaMA -->
+    <div *ngIf="aiResponse && getAiFieldKeys().length" class="generated-content-section">
+      <h3 class="section-subtitle">Generated Content</h3>
+
+      <div *ngFor="let key of getAiFieldKeys()" class="form-group">
+        <label>{{ formatFieldName(key) }}</label>
+        <textarea [(ngModel)]="aiResponse[key]" rows="2"></textarea>
+      </div>
+
+      <!-- Generate Poster Image -->
+      <button class="btn secondary-btn" (click)="generatePoster()">
+        <span class="icon">&#x1F3A8;</span> Generate Poster Image
+      </button>
+    </div>
+  </div>
+
+  <!-- Right: Poster Preview -->
+  <div class="preview-section">
+    <ng-container *ngIf="!isLoading; else loading">
+      <img *ngIf="posterBase64; else noPreview" [src]="'data:image/png;base64,' + posterBase64" class="poster-image" />
+      <ng-template #noPreview>
+        <p class="no-preview-text">No poster preview yet.</p>
+      </ng-template>
+    </ng-container>
+    <ng-template #loading>
+      <div class="loading-skeleton"></div>
+    </ng-template>
+  </div>
+</div>

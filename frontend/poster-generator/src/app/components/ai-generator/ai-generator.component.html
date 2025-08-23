@@ -1,0 +1,359 @@
+<div class="ai-generator-container">
+  <!-- Animated Background -->
+  <div class="bg-particles">
+    <div class="particle" [style.left.px]="50 + i * 100" [style.top.px]="30 + i * 80"
+      [style.animation-delay.s]="i * 0.5" *ngFor="let item of [].constructor(12); let i = index"></div>
+  </div>
+
+  <!-- Header Section -->
+  <div class="header">
+    <h1 class="logo">
+      <span class="logo-icon">✨</span>
+      AI Creator Studio
+    </h1>
+    <p class="tagline">Transform ideas into stunning visuals with AI</p>
+  </div>
+
+  <!-- Mode Toggle -->
+  <div class="mode-toggle">
+    <div class="toggle-container">
+      <button class="toggle-btn" [class.active]="currentMode === 'poster'" (click)="switchMode('poster')"
+        [disabled]="isAnimating">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+          <line x1="9" y1="9" x2="9" y2="15" />
+          <line x1="15" y1="9" x2="15" y2="15" />
+        </svg>
+        Poster Generator
+      </button>
+      <button class="toggle-btn" [class.active]="currentMode === 'image'" (click)="switchMode('image')"
+        [disabled]="isAnimating">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+          <circle cx="8.5" cy="8.5" r="1.5" />
+          <polyline points="21,15 16,10 5,21" />
+        </svg>
+        Image Generator
+      </button>
+      <div class="toggle-slider" [class.image-mode]="currentMode === 'image'"></div>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="main-content" [class.animating]="isAnimating">
+
+    <!-- Poster Generator Mode -->
+    <div class="generator-section" *ngIf="currentMode === 'poster'" [@slideInOut]>
+      <div class="content-grid">
+
+        <!-- Left Panel: Form -->
+        <div class="form-panel">
+          <div class="panel-header">
+            <h2>Poster Architect</h2>
+            <p>Create professional posters with AI-powered content generation</p>
+          </div>
+
+          <!-- Main Prompt -->
+          <div class="form-group">
+            <label for="poster-prompt" class="form-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path
+                  d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66L9.64 16.2a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+              </svg>
+              Describe Your Poster
+            </label>
+            <textarea id="poster-prompt" class="form-input textarea" [(ngModel)]="posterForm.main_prompt" rows="3"
+              placeholder="e.g., Create a modern poster for a Python bootcamp with coding elements...">
+            </textarea>
+          </div>
+
+          <!-- Theme Input -->
+          <div class="form-group">
+            <label for="theme" class="form-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="3" />
+                <path
+                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+              </svg>
+              Theme & Aesthetics
+            </label>
+            <input id="theme" class="form-input" [(ngModel)]="posterForm.theme"
+              placeholder="e.g., Futuristic tech vibe, minimal corporate, vibrant startup...">
+          </div>
+
+          <!-- Field Selection -->
+          <div class="form-group">
+            <label class="form-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <polyline points="9,11 12,14 22,4" />
+                <path d="M21,12v7a2,2,0,0,1-2,2H5a2,2,0,0,1-2-2V5a2,2,0,0,1,2-2h11" />
+              </svg>
+              Select Poster Elements
+            </label>
+            <div class="checkbox-grid">
+              <label class="checkbox-item" [class.checked]="posterForm.include_hero_headline">
+                <input type="checkbox" [(ngModel)]="posterForm.include_hero_headline">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">Hero Headline</span>
+              </label>
+              <label class="checkbox-item" [class.checked]="posterForm.include_hero_subline">
+                <input type="checkbox" [(ngModel)]="posterForm.include_hero_subline">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">Hero Subline</span>
+              </label>
+              <label class="checkbox-item" [class.checked]="posterForm.include_description">
+                <input type="checkbox" [(ngModel)]="posterForm.include_description">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">Description</span>
+              </label>
+              <label class="checkbox-item" [class.checked]="posterForm.include_cta">
+                <input type="checkbox" [(ngModel)]="posterForm.include_cta">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">Call to Action</span>
+              </label>
+              <label class="checkbox-item" [class.checked]="posterForm.include_testimonial">
+                <input type="checkbox" [(ngModel)]="posterForm.include_testimonial">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">Testimonial</span>
+              </label>
+              <label class="checkbox-item" [class.checked]="posterForm.include_success_metrics">
+                <input type="checkbox" [(ngModel)]="posterForm.include_success_metrics">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">Success Metrics</span>
+              </label>
+              <label class="checkbox-item" [class.checked]="posterForm.include_target_audience">
+                <input type="checkbox" [(ngModel)]="posterForm.include_target_audience">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">Target Audience</span>
+              </label>
+              <label class="checkbox-item" [class.checked]="posterForm.include_cta_link">
+                <input type="checkbox" [(ngModel)]="posterForm.include_cta_link">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">CTA Link</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Generate Fields Button -->
+          <button class="btn btn-primary" (click)="generatePosterFields()" [disabled]="isGeneratingFields">
+            <span class="btn-icon" *ngIf="!isGeneratingFields">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path
+                  d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+                <path d="M5 3v4" />
+                <path d="M19 17v4" />
+                <path d="M3 5h4" />
+                <path d="M17 19h4" />
+              </svg>
+            </span>
+            <div class="loading-spinner" *ngIf="isGeneratingFields"></div>
+            {{ isGeneratingFields ? 'Generating...' : 'Generate Content' }}
+          </button>
+
+          <!-- Generated Fields Section -->
+          <div class="generated-fields" *ngIf="generatedFields && getFieldKeys().length > 0" [@fadeInUp]>
+            <div class="section-header">
+              <h3>Generated Content</h3>
+              <p>Edit the AI-generated content below</p>
+            </div>
+
+            <div class="field-grid">
+              <div class="form-group" *ngFor="let key of getFieldKeys(); trackBy: trackByField">
+                <label [for]="key" class="form-label">{{ formatFieldName(key) }}</label>
+                <textarea [id]="key" class="form-input textarea-small" [(ngModel)]="generatedFields[key]" rows="2">
+                </textarea>
+              </div>
+            </div>
+
+            <!-- Generate Poster Button -->
+            <button class="btn btn-secondary" (click)="generatePosterImage()" [disabled]="isGeneratingPoster">
+              <span class="btn-icon" *ngIf="!isGeneratingPoster">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21,15 16,10 5,21" />
+                </svg>
+              </span>
+              <div class="loading-spinner" *ngIf="isGeneratingPoster"></div>
+              {{ isGeneratingPoster ? 'Creating Poster...' : 'Generate Poster' }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Panel: Preview -->
+        <div class="preview-panel">
+          <div class="preview-header">
+            <h3>Preview</h3>
+            <div class="preview-actions" *ngIf="posterImage">
+              <button class="btn-icon-only" title="Download">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7,10 12,15 17,10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="preview-content">
+            <div class="preview-placeholder" *ngIf="!posterImage && !isGeneratingPoster">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <polyline points="21,15 16,10 5,21" />
+              </svg>
+              <p>Your poster will appear here</p>
+            </div>
+
+            <div class="loading-skeleton" *ngIf="isGeneratingPoster">
+              <div class="skeleton-lines">
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line short"></div>
+              </div>
+            </div>
+
+            <img *ngIf="posterImage && !isGeneratingPoster" [src]="'data:image/png;base64,' + posterImage"
+              class="preview-image" alt="Generated Poster">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Image Generator Mode -->
+    <div class="generator-section" *ngIf="currentMode === 'image'" [@slideInOut]>
+      <div class="content-grid">
+
+        <!-- Left Panel: Form -->
+        <div class="form-panel">
+          <div class="panel-header">
+            <h2>Image Generator</h2>
+            <p>Generate stunning images with advanced AI models</p>
+          </div>
+
+          <!-- Main Prompt -->
+          <div class="form-group">
+            <label for="image-prompt" class="form-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path
+                  d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66L9.64 16.2a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+              </svg>
+              Describe Your Image
+            </label>
+            <textarea id="image-prompt" class="form-input textarea" [(ngModel)]="imageForm.main_prompt" rows="4"
+              placeholder="e.g., A futuristic cityscape at sunset with flying cars and neon lights...">
+            </textarea>
+          </div>
+
+          <!-- Aspect Ratio -->
+          <div class="form-group">
+            <label class="form-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                <path d="M8 12h8" />
+                <path d="M12 8v8" />
+              </svg>
+              Aspect Ratio
+            </label>
+            <div class="aspect-ratio-grid">
+              <label class="aspect-ratio-item" [class.selected]="imageForm.aspect_ratio === '1:1'">
+                <input type="radio" [(ngModel)]="imageForm.aspect_ratio" value="1:1">
+                <div class="aspect-preview square"></div>
+                <span>Square (1:1)</span>
+              </label>
+              <label class="aspect-ratio-item" [class.selected]="imageForm.aspect_ratio === '16:9'">
+                <input type="radio" [(ngModel)]="imageForm.aspect_ratio" value="16:9">
+                <div class="aspect-preview landscape"></div>
+                <span>Landscape (16:9)</span>
+              </label>
+              <label class="aspect-ratio-item" [class.selected]="imageForm.aspect_ratio === '9:16'">
+                <input type="radio" [(ngModel)]="imageForm.aspect_ratio" value="9:16">
+                <div class="aspect-preview portrait"></div>
+                <span>Portrait (9:16)</span>
+              </label>
+              <label class="aspect-ratio-item" [class.selected]="imageForm.aspect_ratio === '3:2'">
+                <input type="radio" [(ngModel)]="imageForm.aspect_ratio" value="3:2">
+                <div class="aspect-preview photo"></div>
+                <span>Photo (3:2)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Image Count -->
+          <div class="form-group">
+            <label class="form-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+              </svg>
+              Number of Images (Max 3)
+            </label>
+            <div class="count-selector">
+              <button type="button" (click)="adjustCount(-1)" [disabled]="imageForm.count <= 1">-</button>
+              <span class="count-display">{{ imageForm.count }}</span>
+              <button type="button" (click)="adjustCount(1)" [disabled]="imageForm.count >= 3">+</button>
+            </div>
+          </div>
+
+          <!-- Generate Images Button -->
+          <button class="btn btn-primary" (click)="generateImages()" [disabled]="isGeneratingImages">
+            <span class="btn-icon" *ngIf="!isGeneratingImages">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path
+                  d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+              </svg>
+            </span>
+            <div class="loading-spinner" *ngIf="isGeneratingImages"></div>
+            {{ isGeneratingImages ? 'Generating...' : 'Generate Images' }}
+          </button>
+        </div>
+
+        <!-- Right Panel: Preview -->
+        <div class="preview-panel">
+          <div class="preview-header">
+            <h3>Generated Images</h3>
+            <div class="preview-actions" *ngIf="generatedImages.length > 0">
+              <button class="btn-icon-only" title="Download All">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7,10 12,15 17,10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="preview-content">
+            <div class="preview-placeholder" *ngIf="generatedImages.length === 0 && !isGeneratingImages">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <polyline points="21,15 16,10 5,21" />
+              </svg>
+              <p>Generated images will appear here</p>
+            </div>
+
+            <div class="loading-skeleton" *ngIf="isGeneratingImages">
+              <div class="skeleton-image" *ngFor="let item of [].constructor(imageForm.count); let i = index"></div>
+            </div>
+
+            <div class="image-grid" *ngIf="generatedImages.length > 0 && !isGeneratingImages">
+              <div class="image-item" *ngFor="let image of generatedImages; let i = index" [@fadeInUp]>
+                <img [src]="'data:image/png;base64,' + image" [alt]="'Generated Image ' + (i + 1)">
+                <div class="image-overlay">
+                  <button class="btn-icon-only" title="Download">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <polyline points="7,10 12,15 17,10" />
+                      <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
