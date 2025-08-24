@@ -28,30 +28,23 @@ app.add_middleware(
 # 🧠 Step 1: Generate Poster Fields using Groq LLaMA
 @app.post("/generate-fields")
 async def generate_fields(data: PosterRequest):
-    try:
-        print("\n📥 [generate-fields] Received POST with data:", data)
+   try:
+       print("\n📥 [generate-fields] Received POST with data:", data)
 
-        # 🔁 Call Groq (LLaMA) to generate fields
-        raw_response = call_llama_generate_fields(data)
-        print("🧠 [generate-fields] Raw response from LLaMA:\n", raw_response)
+       # 🔁 Call Groq (LLaMA) to generate fields - now returns dict directly!
+       parsed_json = call_llama_generate_fields(data)
+       print("🧠 [generate-fields] Parsed data from LLaMA:\n", parsed_json)
 
-        # 🧪 Parse JSON string safely
-        parsed_json = json.loads(raw_response)
+       # ✅ Return clean object to frontend
+       return {
+           "status": "success",
+           "data": parsed_json,
+           "message": "Poster fields generated using LLaMA."
+       }
 
-        # ✅ Return clean object to frontend
-        return {
-            "status": "success",
-            "data": parsed_json,
-            "message": "Poster fields generated using LLaMA."
-        }
-
-    except json.JSONDecodeError as e:
-        print("❌ [generate-fields] JSON parsing error:", str(e))
-        raise HTTPException(status_code=500, detail="Failed to parse LLaMA response as JSON.")
-
-    except Exception as e:
-        print("❌ [generate-fields] General error:", str(e))
-        raise HTTPException(status_code=500, detail=str(e))
+   except Exception as e:
+       print("❌ [generate-fields] General error:", str(e))
+       raise HTTPException(status_code=500, detail=f"LLaMA field generation failed: {str(e)}")
 
 # 🖼️ Step 2: Generate Final Poster Image
 @app.post("/generate-poster")
