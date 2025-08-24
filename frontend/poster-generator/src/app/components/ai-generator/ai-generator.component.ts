@@ -7,6 +7,7 @@ import {
   animate,
   transition,
 } from '@angular/animations';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-ai-generator',
@@ -43,7 +44,7 @@ import {
   ],
 })
 export class AiGeneratorComponent {
-  apiBase = 'http://localhost:8000';
+  apiBase = environment.apiUrl;
 
   // Poster generator forms and states
   posterForm: any = {
@@ -79,7 +80,9 @@ export class AiGeneratorComponent {
   currentMode: 'poster' | 'image' = 'poster';
   isAnimating = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+     console.log('API base URL:', this.apiBase);
+  }
 
   // Getter for animation state
   get slideState(): string {
