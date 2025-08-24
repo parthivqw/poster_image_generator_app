@@ -82,6 +82,7 @@ export class AiGeneratorComponent {
 
   constructor(private http: HttpClient) {
      console.log('API base URL:', this.apiBase);
+     console.log("Hi")
   }
 
   // Getter for animation state
