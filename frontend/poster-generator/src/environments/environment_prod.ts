@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: "https://<your-render-service>.onrender.com"   // Replace with your Render backend URL
+  apiUrl: "https://poster-image-generator-app.onrender.com"   // Replace with your Render backend URL
 };
